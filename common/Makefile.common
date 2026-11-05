@@ -24,8 +24,9 @@ OPENOCD ?= openocd
 OPENOCD_SERIAL ?=
 OPENOCD_FLAGS = $(if $(OPENOCD_SERIAL),-c "adapter serial $(OPENOCD_SERIAL)") -f $(OPENOCD_CFG)
 
-# Serial port of the board UART (empty: the test scripts auto-detect it)
-SERIAL_PORT ?=
+# Serial port of the board UART (empty: the test scripts auto-detect it).
+# Local default: USB-UART adapter wired to the F4 Discovery's PA2/PA3.
+SERIAL_PORT ?= /dev/ttyUSB0
 export SERIAL_PORT
 
 # QEMU
@@ -33,11 +34,12 @@ QEMU ?= qemu-system-arm
 QEMU_MACHINE ?= mps2-an386
 QEMU_FLAGS = -M $(QEMU_MACHINE) -nographic -semihosting
 
-# Platform selection (default: board)
+# Platform selection (default: stm32f4discovery, changed locally from board
+# because the board in use is an STM32F4 Discovery)
 #   board            - Nucleo-L4R5ZI
 #   stm32f4discovery - STM32F407VG (STM32F4DISCOVERY), UART on PA2 (TX) / PA3 (RX)
 #   qemu             - QEMU mps2-an386 emulation
-PLATFORM ?= board
+PLATFORM ?= stm32f4discovery
 
 # Target device configuration
 ifeq ($(PLATFORM),qemu)
